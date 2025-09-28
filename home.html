@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/icon.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Cinzel:wght@400..900&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Croissant+One&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Forum&family=Hind:wght@300;400;500;600;700&family=Iceland&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kings&family=Lexend+Deca:wght@100..900&family=Lexend:wght@100..900&family=Nova+Square&family=Princess+Sofia&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Redressed&family=Roboto+Slab:wght@100..900&family=Tangerine:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="bg-gray-50" style="font-family: 'Josefin Sans', sans-serif;">
+
+  <!-- Navbar -->
+  <nav class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+      <a href="#" class="flex items-center space-x-3">
+        <img src="images/logo.png" class="h-12" alt="Logo" />
+        <span class="self-center text-2xl font-semibold text-black" style="font-family: 'Cinzel', serif;">Expense
+          Tracker</span>
+      </a>
+
+      <!-- Logout button -->
+      <button onclick="logout()"
+        class="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded transition duration-300 cursor-pointer">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- Balance -->
+  <div class="max-w-full mx-auto px-6 py-10 shadow-sm ">
+    <h1 class="text-2xl font-semibold text-gray-900 text-center">Current Balance: <span id="balance">0</span></h1>
+  </div>
+
+
+
+  <!-- Dashboard -->
+  <div class="max-w-screen-xl mx-auto px-6 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Income Section -->
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-money-bill-wave text-green-500"></i> Income
+        </h2>
+        <input type="text" id="income-type" placeholder="Enter income type"
+          class="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none">
+
+        <input type="number" id="income-amount" placeholder="Enter income amount"
+          class="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none">
+
+        <button onclick="addIncome()"
+          class="w-full bg-green-400 hover:bg-green-500 text-white font-semibold py-3 rounded-lg transition duration-300 cursor-pointer">
+          Add Income
+        </button>
+      </div>
+
+      <!-- Expense Section -->
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-credit-card text-red-500"></i> Expense
+        </h2>
+        <input type="text" id="expense-type" placeholder="Enter expense type"
+          class="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:outline-none">
+
+        <input type="number" id="expense-amount" placeholder="Enter expense amount"
+          class="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:outline-none">
+
+        <button onclick="addExpense()"
+          class="w-full bg-red-400 hover:bg-red-500 text-white font-semibold py-3 rounded-lg transition duration-300 cursor-pointer">
+          Add Expense
+        </button>
+      </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2 ">
+
+      <div class="bg-white p-4 rounded shadow">
+        <h1 class="text-center text-xl font-bold">Income</h1>
+        <table class="w-full mt-4 border">
+          <thead class="bg-green-100">
+            <tr>
+              <th class="border px-2 py-1">Type</th>
+              <th class="border px-2 py-1">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="incomeTable"></tbody>
+        </table>
+      </div>
+      <div class="bg-white p-4 rounded shadow">
+        <h1 class="text-center  text-xl font-bold">Expenses</h1>
+        <table class="w-full mt-4 border">
+          <thead class="bg-red-100">
+            <tr>
+              <th class="border px-2 py-1">Type</th>
+              <th class="border px-2 py-1">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="expenseTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white p-6 rounded shadow mt-2 flex flex-col justify-center items-center">
+    <h2 class="text-xl font-bold mb-3">Income & Expense Breakdown</h2>
+    <canvas id="pieChart" style="max-width: 300px; max-height: 300px;"></canvas>
+  </div>
+
+
+
+</body>
+<script src="script.js"></script>
+
+</html>
