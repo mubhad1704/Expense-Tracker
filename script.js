@@ -118,6 +118,11 @@ function addExpense() {
     let amount = parseFloat(document.getElementById("expense-amount").value);
     if (!type || isNaN(amount)) return alert("Enter details");
 
+    // Check for negative balance
+    if (amount > balance) {
+        return alert("Insufficient balance! Cannot add this expense.");
+    }
+
     // Add to table
     let table = document.getElementById("expenseTable");
     table.innerHTML += `<tr>
@@ -139,6 +144,7 @@ function addExpense() {
     document.getElementById("expense-type").value = "";
     document.getElementById("expense-amount").value = "";
 }
+
 
 function logout() {
     // Optionally, you can clear a login flag from localStorage if you implement one
